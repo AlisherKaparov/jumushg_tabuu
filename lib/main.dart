@@ -4,8 +4,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Main extends StatelessWidget {
-  Main({Key? key}) : super(key: key);
+void main() {
+  runApp(MaterialApp(
+    home: QuizApp(),
+  ));
+}
+
+class QuizApp extends StatelessWidget {
+  QuizApp({Key? key}) : super(key: key);
   List<String> shaardynAttary = [
     'Batken',
     'Osh',

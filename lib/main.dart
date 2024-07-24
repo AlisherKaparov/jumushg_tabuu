@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -5,9 +7,18 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: QuizApp(),
-  ));
+  runApp(MyWidget());
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: QuizApp(),
+    );
+  }
 }
 
 class QuizApp extends StatelessWidget {
@@ -19,7 +30,7 @@ class QuizApp extends StatelessWidget {
     'Naryn',
     'Jalal-Abat',
     'Talas',
-    ''
+    'Yssyk-Kol',
   ];
   List<int> sany = [
     1,
@@ -48,32 +59,27 @@ class QuizApp extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   )),
             ),
-            Container(
-              child: Material(
-                child: InkWell(
-                  splashColor: Colors.green,
-                  onTap: () {},
-                  child: Container(
-                    width: 335,
-                    height: 75,
-                    child: Text(
-                      'Туура',
-                      style: TextStyle(
-                          fontSize: 32,
-                          color: Colors.white10,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
-                color: Colors.teal,
-              ),
-              color: Colors.orangeAccent,
+            TuuraIcon(
+              text: 'Tyypa',
+              color: Colors.purple,
+              splashColor: Colors.yellow,
+              onTap: () {},
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TuuraIcon(
+              text: 'Tyypa эмес',
+              color: Colors.green,
+              splashColor: Colors.red,
+              onTap: () {},
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.check,
                     color: Colors.greenAccent,
                     size: 50,
@@ -81,7 +87,7 @@ class QuizApp extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: Colors.greenAccent,
                     size: 50,
@@ -92,6 +98,46 @@ class QuizApp extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TuuraIcon extends StatelessWidget {
+  TuuraIcon(
+      {Key? key,
+      required this.color,
+      required this.text,
+      required this.onTap,
+      required this.splashColor})
+      : super(key: key);
+  Color color;
+  Color splashColor;
+  String text;
+  void Function()? onTap;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Material(
+        child: InkWell(
+          splashColor: splashColor,
+          onTap: () {},
+          child: Container(
+            width: 335,
+            height: 75,
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+        color: color,
+      ),
+      color: Colors.orangeAccent,
     );
   }
 }

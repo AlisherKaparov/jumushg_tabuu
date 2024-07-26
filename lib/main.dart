@@ -1,10 +1,12 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jumushg_tabuu/quiz_brain.dart';
+import 'package:jumushg_tabuu/second_page.dart';
 
 void main() {
   runApp(MyWidget());
@@ -21,26 +23,44 @@ class MyWidget extends StatelessWidget {
   }
 }
 
-class QuizApp extends StatelessWidget {
+class QuizApp extends StatefulWidget {
   QuizApp({Key? key}) : super(key: key);
-  List<String> shaardynAttary = [
-    'Batken',
-    'Osh',
-    'Chuy',
-    'Naryn',
-    'Jalal-Abat',
-    'Talas',
-    'Yssyk-Kol',
-  ];
-  List<int> sany = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-  ];
+
+  @override
+  State<QuizApp> createState() => _QuizAppState();
+}
+
+class _QuizAppState extends State<QuizApp> {
+  bool? isFinished = false;
+  suroJooptuTeksher(bool okuuchununJoobu) {
+    bool? itninJoobu = quizBrain.jooptuAlypKel()!;
+    if (okuuchununJoobu == itninJoobu) {
+      icons.add(
+        Icon(
+          Icons.check,
+          color: Colors.blue,
+          size: 50,
+        ),
+      );
+    } else {
+      icons.add(
+        Icon(
+          Icons.close,
+          color: Colors.red,
+          size: 50,
+        ),
+      );
+    } //suroJoop()
+    quizBrain.suroonuOtkoz();
+    quizBrain.suroonuAlypKel();
+
+    if (quizBrain.suroonuAlypKel() == 'Suroo buttu') {
+      isFinished = true;
+    }
+    setState(() {});
+  }
+
+  List<Widget> icons = [];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +71,7 @@ class QuizApp extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Text('Кыргызстанда 7 область бар ',
+              child: Text(quizBrain.suroonuAlypKel() ?? 'Suroo buttu',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     fontSize: 32,
@@ -59,57 +79,85 @@ class QuizApp extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   )),
             ),
-            TuuraIcon(
-              text: 'Tyypa',
-              color: Colors.purple,
-              splashColor: Colors.yellow,
-              onTap: () {},
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TuuraIcon(
-              text: 'Tyypa эмес',
-              color: Colors.green,
-              splashColor: Colors.red,
-              onTap: () {},
-            ),
+            if (isFinished!)
+              TuuraIcon(
+                color: Colors.red,
+                text: "Kaira Bashta",
+                onTap: () {},
+                splashColor: Colors.grey,
+              )
+            else
+              Column(
+                children: [
+                  TuuraIcon(
+                    text: 'Tyypa',
+                    color: Colors.purple,
+                    splashColor: Colors.yellow,
+                    onTap: () {
+                      suroJooptuTeksher(
+                        true,
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TuuraIcon(
+                    text: 'Tyypa эмес',
+                    color: Colors.green,
+                    splashColor: Colors.red,
+                    onTap: () {
+                      suroJooptuTeksher(false);
+                    },
+                  ),
+                ],
+              ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.check,
-                    color: Colors.greenAccent,
-                    size: 50,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.greenAccent,
-                    size: 50,
-                  ),
-                ),
-              ],
+              children: icons,
             ),
           ],
+        ),
+        floatingActionButton: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SecondPage()),
+            );
+          },
+          child: Text('Next page'),
         ),
       ),
     );
   }
 }
 
+class ChoiceIcon extends StatelessWidget {
+  ChoiceIcon({
+    super.key,
+    required this.icon,
+    required this.color,
+  });
+  final IconData? icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      icon,
+      size: 65,
+      color: color,
+    );
+  }
+}
+
 class TuuraIcon extends StatelessWidget {
-  TuuraIcon(
-      {Key? key,
-      required this.color,
-      required this.text,
-      required this.onTap,
-      required this.splashColor})
-      : super(key: key);
+  TuuraIcon({
+    Key? key,
+    required this.color,
+    required this.text,
+    required this.onTap,
+    required this.splashColor,
+  }) : super(key: key);
   Color color;
   Color splashColor;
   String text;
@@ -120,7 +168,7 @@ class TuuraIcon extends StatelessWidget {
       child: Material(
         child: InkWell(
           splashColor: splashColor,
-          onTap: () {},
+          onTap: onTap,
           child: Container(
             width: 335,
             height: 75,
@@ -140,4 +188,14 @@ class TuuraIcon extends StatelessWidget {
       color: Colors.orangeAccent,
     );
   }
+}
+
+class SuroJoop {
+  final String suro;
+  final bool joop;
+
+  SuroJoop({
+    required this.suro,
+    required this.joop,
+  });
 }

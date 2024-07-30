@@ -36,7 +36,7 @@ class _QuizAppState extends State<QuizApp> {
     bool? itninJoobu = quizBrain.jooptuAlypKel()!;
     if (okuuchununJoobu == itninJoobu) {
       icons.add(
-        Icon(
+        const Icon(
           Icons.check,
           color: Colors.blue,
           size: 50,
@@ -44,7 +44,7 @@ class _QuizAppState extends State<QuizApp> {
       );
     } else {
       icons.add(
-        Icon(
+        const Icon(
           Icons.close,
           color: Colors.red,
           size: 50,
@@ -99,7 +99,7 @@ class _QuizAppState extends State<QuizApp> {
                       );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TuuraIcon(
@@ -121,7 +121,7 @@ class _QuizAppState extends State<QuizApp> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SecondPage()),
+              MaterialPageRoute(builder: (context) => SecondPage()),
             );
           },
           child: Text('Next page'),

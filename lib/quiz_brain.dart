@@ -33,7 +33,7 @@ class QuizBrain {
     if (katarNomeri < suroJoop.length) {
       return suroJoop[katarNomeri].suro;
     } else {
-      'Suroo buttu';
+      return '';
     }
   }
 
@@ -41,6 +41,7 @@ class QuizBrain {
     if (katarNomeri < suroJoop.length) {
       return suroJoop[katarNomeri].joop;
     }
+    return null;
   }
 
   suroonuOtkoz() {

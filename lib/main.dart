@@ -1,9 +1,5 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jumushg_tabuu/quiz_brain.dart';
 import 'package:jumushg_tabuu/second_page.dart';
@@ -31,7 +27,7 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  bool? isFinished = false;
+  bool? surooButtu = false;
   suroJooptuTeksher(bool okuuchununJoobu) {
     bool? itninJoobu = quizBrain.jooptuAlypKel()!;
     if (okuuchununJoobu == itninJoobu) {
@@ -52,10 +48,10 @@ class _QuizAppState extends State<QuizApp> {
       );
     } //suroJoop()
     quizBrain.suroonuOtkoz();
-    quizBrain.suroonuAlypKel();
 
-    if (quizBrain.suroonuAlypKel() == 'Suroo buttu') {
-      isFinished = true;
+    if (quizBrain.suroonuAlypKel() == '') {
+      surooButtu = true;
+      icons = [];
     }
     setState(() {});
   }
@@ -71,7 +67,7 @@ class _QuizAppState extends State<QuizApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Text(quizBrain.suroonuAlypKel() ?? 'Suroo buttu',
+              child: Text(quizBrain.suroonuAlypKel().toString(),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     fontSize: 32,
@@ -79,45 +75,60 @@ class _QuizAppState extends State<QuizApp> {
                     fontWeight: FontWeight.w500,
                   )),
             ),
-            if (isFinished!)
-              TuuraIcon(
-                color: Colors.red,
-                text: "Kaira Bashta",
-                onTap: () {},
-                splashColor: Colors.grey,
-              )
-            else
-              Column(
-                children: [
-                  TuuraIcon(
-                    text: 'Tyypa',
-                    color: Colors.purple,
-                    splashColor: Colors.yellow,
-                    onTap: () {
-                      suroJooptuTeksher(
-                        true,
-                      );
-                    },
+            surooButtu == true
+                ? AlertDialog(
+                    title: const Text('Suroo buttu azamatsyz!'),
+                    content: const SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text('Tuura joop (), Kata joop ()'),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Kaira bashta'),
+                        onPressed: () {
+                          setState(() {});
+                          quizBrain.suroonuAlypKel();
+                          surooButtu = false;
+                          quizBrain.katarNomeri = 0;
+                          icons = [];
+                        },
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      TuuraIcon(
+                        text: 'Tyypa',
+                        color: Colors.purple,
+                        splashColor: Colors.yellow,
+                        onTap: () {
+                          suroJooptuTeksher(
+                            true,
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TuuraIcon(
+                        text: 'Tyypa эмес',
+                        color: Colors.green,
+                        splashColor: Colors.red,
+                        onTap: () {
+                          suroJooptuTeksher(false);
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TuuraIcon(
-                    text: 'Tyypa эмес',
-                    color: Colors.green,
-                    splashColor: Colors.red,
-                    onTap: () {
-                      suroJooptuTeksher(false);
-                    },
-                  ),
-                ],
-              ),
             Row(
               children: icons,
             ),
           ],
         ),
-        floatingActionButton: ElevatedButton(
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
